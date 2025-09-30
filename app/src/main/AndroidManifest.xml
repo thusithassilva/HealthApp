@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthApp">
         <activity
+            android:name=".StatsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MoodAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".MoodActivity"
+            android:exported="false" />
+        <activity
             android:name=".HabitsAdapter"
             android:exported="false" />
         <activity

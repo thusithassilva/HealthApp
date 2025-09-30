@@ -117,6 +117,13 @@ class MainActivity : AppCompatActivity() {
         binding.cardHabits.setOnClickListener {
             startActivity(Intent(this, HabitsActivity::class.java))
         }
+
+        binding.cardMood.setOnClickListener {
+            startActivity(Intent(this, MoodActivity::class.java))
+        }
+        binding.cardStats.setOnClickListener {
+            startActivity(Intent(this, StatsActivity::class.java))
+        }
     }
 
     private fun setupNavigation() {
@@ -127,11 +134,11 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_mood -> {
-                    Toast.makeText(this, "Mood Journal", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, MoodActivity::class.java))
                     true
                 }
                 R.id.nav_stats -> {
-                    Toast.makeText(this, "Statistics", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, StatsActivity::class.java))
                     true
                 }
                 R.id.nav_hydration -> {

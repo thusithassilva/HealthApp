@@ -37,4 +37,13 @@
     <color name="light_gray">#F0F0F0</color>
     <color name="success_green">#4CAF50</color>
 
+    <!-- Hydration Colors -->
+    <!--color name="hydration_progress">#2196F3</color-->
+    <color name="hydration_light">#90CAF9</color>
+    <color name="error_red">#F44336</color>
+    <color name="switch_track">#C0C0C0</color>
+
+    <!-- New Colors for Hydration -->
+    <color name="test_mode_bg">#E8F5E8</color>
+
 </resources>

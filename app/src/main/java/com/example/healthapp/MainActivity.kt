@@ -124,6 +124,9 @@ class MainActivity : AppCompatActivity() {
         binding.cardStats.setOnClickListener {
             startActivity(Intent(this, StatsActivity::class.java))
         }
+        binding.cardHydration.setOnClickListener {
+            startActivity(Intent(this, HydrationActivity::class.java))
+        }
     }
 
     private fun setupNavigation() {
@@ -142,7 +145,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_hydration -> {
-                    Toast.makeText(this, "Hydration", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, HydrationActivity::class.java))
                     true
                 }
                 else -> false

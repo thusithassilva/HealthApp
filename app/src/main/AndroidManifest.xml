@@ -15,57 +15,54 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthApp">
-
+        <activity
+            android:name=".WaterReminderReceiver"
+            android:exported="false" />
         <!-- Activities -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".OnboardingActivity"
             android:exported="false" />
-
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
-
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
-
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-
         <activity
             android:name=".ProfileActivity"
             android:exported="false" />
-
         <activity
             android:name=".EditProfileActivity"
             android:exported="false" />
-
         <activity
             android:name=".HabitsActivity"
             android:exported="false" />
-
         <activity
             android:name=".MoodActivity"
             android:exported="false" />
-
         <activity
             android:name=".StatsActivity"
             android:exported="false" />
-
         <activity
             android:name=".HydrationActivity"
             android:exported="false" />
 
+        <receiver
+            android:name=".WaterReminderReceiver"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>

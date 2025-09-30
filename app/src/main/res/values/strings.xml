@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Wellness Tracker</string>
+    <string name="tagline">Your Daily Health Companion</string>
+    <string name="app_logo">Wellness App Logo</string>
+    <string name="onboarding_image">Onboarding illustration</string>
+    <string name="forgot_passcode">Forgot Passcode?</string>
+    <string name="create_account">Create Account</string>
+    <string name="welcome_back">Welcome Back</string>
+</resources>

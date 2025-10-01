@@ -161,16 +161,12 @@ class MainActivity : AppCompatActivity() {
         // Simple profile menu implementation
         val popupMenu = android.widget.PopupMenu(this, binding.ivProfile)
         popupMenu.menu.add(Menu.NONE, 1, Menu.NONE, "View Profile")
-        popupMenu.menu.add(Menu.NONE, 2, Menu.NONE, "Logout")
 
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 1 -> {
-                    Toast.makeText(this, "Update Profile", Toast.LENGTH_SHORT).show()
-                    true
-                }
-                2 -> {
-                    showLogoutConfirmation()
+                    // Navigate to ViewProfileActivity
+                    startActivity(Intent(this, ViewProfileActivity::class.java))
                     true
                 }
                 else -> false

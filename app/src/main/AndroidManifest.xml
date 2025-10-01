@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthApp">
         <activity
+            android:name=".ViewProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".CyclingActivity"
             android:exported="false" />
         <activity

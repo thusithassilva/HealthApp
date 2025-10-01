@@ -1,5 +1,6 @@
 package com.example.healthapp
 
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -76,18 +77,18 @@ class HabitsActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_mood -> {
-                    Toast.makeText(this, "Opening Mood Journal", Toast.LENGTH_SHORT).show()
-                    // Navigate to Mood Activity
+                    startActivity(android.content.Intent(this, MoodActivity::class.java))
+                    finish()
                     true
                 }
                 R.id.nav_stats -> {
-                    Toast.makeText(this, "Opening Statistics", Toast.LENGTH_SHORT).show()
-                    // Navigate to Stats Activity
+                    startActivity(Intent(this, StatsActivity::class.java))
+                    finish()
                     true
                 }
                 R.id.nav_hydration -> {
-                    Toast.makeText(this, "Opening Hydration", Toast.LENGTH_SHORT).show()
-                    // Navigate to Hydration Activity
+                    startActivity(android.content.Intent(this, HydrationActivity::class.java))
+                    finish()
                     true
                 }
                 else -> false

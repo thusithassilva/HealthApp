@@ -170,7 +170,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 2 -> {
-                    logout()
+                    showLogoutConfirmation()
                     true
                 }
                 else -> false
@@ -195,7 +195,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showSettingsMenu() {
-        val popupMenu = android.widget.PopupMenu(this, binding.toolbar)
+        val popupMenu = android.widget.PopupMenu(this, findViewById(R.id.menu_settings))
         popupMenu.menuInflater.inflate(R.menu.settings_menu, popupMenu.menu)
 
         // Force show icons on right side
@@ -217,18 +217,35 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this, ProfileActivity::class.java))
                     true
                 }
-                R.id.menu_change_passcode -> {
-                    Toast.makeText(this, "Change Passcode", Toast.LENGTH_SHORT).show()
-                    true
-                }
                 R.id.menu_logout -> {
-                    logout()
+                    showLogoutConfirmation()
                     true
                 }
                 else -> false
             }
         }
+
+        // Show the popup menu aligned to the right
+        popupMenu.gravity = android.view.Gravity.END
         popupMenu.show()
+    }
+
+    private fun showLogoutConfirmation() {
+        val alertDialog = android.app.AlertDialog.Builder(this)
+            .setTitle("Logout")
+            .setMessage("Are you sure you want to logout?")
+            .setPositiveButton("OK") { dialog, which ->
+                // User clicked OK, proceed with logout
+                logout()
+            }
+            .setNegativeButton("Cancel") { dialog, which ->
+                // User clicked Cancel, stay on main page
+                dialog.dismiss()
+                Toast.makeText(this, "Logout cancelled", Toast.LENGTH_SHORT).show()
+            }
+            .create()
+
+        alertDialog.show()
     }
 
     private fun logout() {

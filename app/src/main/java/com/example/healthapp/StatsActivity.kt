@@ -61,7 +61,8 @@ class StatsActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_hydration -> {
-                    Toast.makeText(this, "Opening Hydration", Toast.LENGTH_SHORT).show()
+                    startActivity(android.content.Intent(this, HydrationActivity::class.java))
+                    finish()
                     true
                 }
                 else -> false
@@ -75,6 +76,7 @@ class StatsActivity : AppCompatActivity() {
     private fun loadAndDisplayStats() {
         loadHabitsStats()
         loadMoodStats()
+        loadCyclingStats()
         loadWeeklyProgress()
         loadOverallWellnessScore()
     }
@@ -176,6 +178,60 @@ class StatsActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadCyclingStats() {
+        val cyclingJson = sharedPreferences.getString("cycling_sessions", "[]")
+
+        try {
+            val jsonArray = JSONArray(cyclingJson)
+            val totalSessions = jsonArray.length()
+
+            var totalCyclingDistance = 0.0
+            var totalCyclingTime = 0L
+            var totalCyclingCalories = 0
+            var longestDistance = 0.0
+            var fastestSpeed = 0.0
+
+            for (i in 0 until jsonArray.length()) {
+                val session = jsonArray.getJSONObject(i)
+                totalCyclingDistance += session.getDouble("distance")
+                totalCyclingTime += session.getLong("duration")
+                totalCyclingCalories += session.getInt("calories")
+
+                // Check for longest distance
+                val sessionDistance = session.getDouble("distance")
+                if (sessionDistance > longestDistance) {
+                    longestDistance = sessionDistance
+                }
+
+                // Check for fastest speed
+                val sessionSpeed = session.getDouble("averageSpeed")
+                if (sessionSpeed > fastestSpeed) {
+                    fastestSpeed = sessionSpeed
+                }
+            }
+
+            // Update UI
+            binding.tvCyclingSessions.text = totalSessions.toString()
+            binding.tvTotalCyclingDistance.text = "%.1f km".format(totalCyclingDistance)
+            binding.tvTotalCyclingCalories.text = "$totalCyclingCalories cal"
+
+            val totalHours = totalCyclingTime / 3600000.0
+            binding.tvTotalCyclingTime.text = "%.1f hours".format(totalHours)
+
+            binding.tvLongestRide.text = "%.1f km".format(longestDistance)
+            binding.tvFastestSpeed.text = "%.1f km/h".format(fastestSpeed)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            binding.tvCyclingSessions.text = "0"
+            binding.tvTotalCyclingDistance.text = "0.0 km"
+            binding.tvTotalCyclingCalories.text = "0 cal"
+            binding.tvTotalCyclingTime.text = "0.0 hours"
+            binding.tvLongestRide.text = "0.0 km"
+            binding.tvFastestSpeed.text = "0.0 km/h"
+        }
+    }
+
     private fun loadWeeklyProgress() {
         // Calculate weekly completion rate
         val habitsJson = sharedPreferences.getString("user_habits", "[]")
@@ -220,15 +276,17 @@ class StatsActivity : AppCompatActivity() {
     }
 
     private fun loadOverallWellnessScore() {
-        // Calculate overall wellness score based on habits and mood
+        // Calculate overall wellness score based on habits, mood, and cycling
         val habitsJson = sharedPreferences.getString("user_habits", "[]")
         val moodJson = sharedPreferences.getString("user_mood_entries", "[]")
+        val cyclingJson = sharedPreferences.getString("cycling_sessions", "[]")
 
         try {
             val habitsArray = JSONArray(habitsJson)
             val moodArray = JSONArray(moodJson)
+            val cyclingArray = JSONArray(cyclingJson)
 
-            // Habits component (50%)
+            // Habits component (40%)
             val totalHabits = habitsArray.length()
             var completedHabits = 0
             for (i in 0 until habitsArray.length()) {
@@ -237,12 +295,15 @@ class StatsActivity : AppCompatActivity() {
                     completedHabits++
                 }
             }
-            val habitsScore = if (totalHabits > 0) (completedHabits * 50.0) / totalHabits else 0.0
+            val habitsScore = if (totalHabits > 0) (completedHabits * 40.0) / totalHabits else 0.0
 
-            // Mood component (50%)
-            val moodScore = calculateAverageMoodScore() * 5 // Convert 0-10 to 0-50
+            // Mood component (40%)
+            val moodScore = calculateAverageMoodScore() * 4 // Convert 0-10 to 0-40
 
-            val overallScore = habitsScore + moodScore
+            // Cycling component (20%) - based on recent activity
+            val cyclingScore = calculateCyclingScore(cyclingArray)
+
+            val overallScore = habitsScore + moodScore + cyclingScore
 
             binding.tvWellnessScore.text = "%.1f/100".format(overallScore)
             binding.progressWellnessScore.progress = overallScore.toInt()
@@ -262,6 +323,30 @@ class StatsActivity : AppCompatActivity() {
             binding.progressWellnessScore.progress = 0
             binding.tvWellnessLevel.text = "No data"
         }
+    }
+
+    private fun calculateCyclingScore(cyclingArray: JSONArray): Double {
+        if (cyclingArray.length() == 0) return 0.0
+
+        val calendar = Calendar.getInstance()
+        val currentWeek = calendar.get(Calendar.WEEK_OF_YEAR)
+        var weeklySessions = 0
+
+        for (i in 0 until cyclingArray.length()) {
+            val session = cyclingArray.getJSONObject(i)
+            val sessionDate = session.getString("date")
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val sessionCalendar = Calendar.getInstance().apply {
+                time = dateFormat.parse(sessionDate) ?: Date()
+            }
+
+            if (sessionCalendar.get(Calendar.WEEK_OF_YEAR) == currentWeek) {
+                weeklySessions++
+            }
+        }
+
+        // Score based on weekly cycling sessions (max 20 points)
+        return minOf(weeklySessions * 5.0, 20.0)
     }
 
     private fun calculateHabitStreak(): Int {

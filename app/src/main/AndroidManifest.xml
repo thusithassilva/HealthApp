@@ -16,9 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthApp">
         <activity
-            android:name=".WaterReminderReceiver"
+            android:name=".CyclingActivity"
             android:exported="false" />
-        <!-- Activities -->
+        <activity
+            android:name=".WaterReminderReceiver"
+            android:exported="false" /> <!-- Activities -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">

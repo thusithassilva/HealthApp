@@ -127,6 +127,10 @@ class MainActivity : AppCompatActivity() {
         binding.cardHydration.setOnClickListener {
             startActivity(Intent(this, HydrationActivity::class.java))
         }
+        // Add to setupClickListeners() in MainActivity
+        binding.cardCycling.setOnClickListener {
+            startActivity(Intent(this, CyclingActivity::class.java))
+        }
     }
 
     private fun setupNavigation() {

@@ -46,4 +46,16 @@
     <!-- New Colors for Hydration -->
     <color name="test_mode_bg">#E8F5E8</color>
 
+    <!-- Cycling Colors -->
+    <color name="cycling_primary">#4CAF50</color>
+    <color name="cycling_light">#E8F5E8</color>
+    <color name="start_color">#4CAF50</color>
+    <color name="pause_color">#FF9800</color>
+    <color name="resume_color">#2196F3</color>
+    <color name="stop_color">#F44336</color>
+    <color name="calorie_burn">#FF5722</color>
+    <color name="distance_light">#E3F2FD</color>
+    <color name="time_light">#FFF3E0</color>
+    <color name="calorie_light">#FFEBEE</color>
+
 </resources>

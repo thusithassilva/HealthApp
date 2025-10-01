@@ -8,12 +8,20 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.example.healthapp.databinding.ActivityMainBinding
-import java.util.Calendar
+import org.json.JSONArray
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPreferences: SharedPreferences
+
+    // Goal targets
+    private val hydrationGoal = 8
+    private val habitsGoal = 3
+    private val moodGoal = 3
+    private val cyclingGoal = 5.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +37,12 @@ class MainActivity : AppCompatActivity() {
         setupUI()
         setupClickListeners()
         setupNavigation()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Update goals progress when returning to main activity
+        updateGoalsProgress()
     }
 
     private fun checkUserLogin() {
@@ -53,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         // Set today's date
         binding.tvDate.text = getCurrentDate()
 
-        // Set up goals (you can modify this later)
+        // Set up goals with real data
         updateGoalsProgress()
     }
 
@@ -77,43 +91,106 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateGoalsProgress() {
-        // Mock data for goals progress
-        binding.progressWater.progress = 60
-        binding.progressSteps.progress = 40
-        binding.progressSleep.progress = 80
+        // Get real data from SharedPreferences for each activity
+        updateHydrationProgress()
+        updateHabitsProgress()
+        updateMoodProgress()
+        updateCyclingProgress()
+    }
 
-        binding.tvWaterPercent.text = "60%"
-        binding.tvStepsPercent.text = "40%"
-        binding.tvSleepPercent.text = "80%"
+    private fun updateHydrationProgress() {
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        val waterIntake = sharedPreferences.getFloat("water_intake_$today", 0f)
+
+        val hydrationProgress = ((waterIntake / hydrationGoal) * 100).toInt()
+        binding.progressWater.progress = minOf(hydrationProgress, 100)
+        binding.tvWaterPercent.text = "$hydrationProgress%"
+
+        // Update label to show actual intake
+        binding.tvWaterLabel.text = "💧 Hydration (${waterIntake.toInt()}/$hydrationGoal glasses)"
+    }
+
+    private fun updateHabitsProgress() {
+        val habitsJson = sharedPreferences.getString("user_habits", "[]")
+        var completedHabitsToday = 0
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+        try {
+            val jsonArray = JSONArray(habitsJson)
+
+            for (i in 0 until jsonArray.length()) {
+                val habit = jsonArray.getJSONObject(i)
+                val completionDates = habit.optJSONArray("completionDates") ?: JSONArray()
+
+                for (j in 0 until completionDates.length()) {
+                    if (completionDates.getString(j) == today) {
+                        completedHabitsToday++
+                        break
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun updateMoodProgress() {
+        val moodJson = sharedPreferences.getString("user_mood_entries", "[]")
+        var moodEntriesToday = 0
+        val today = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+
+        try {
+            val jsonArray = JSONArray(moodJson)
+
+            for (i in 0 until jsonArray.length()) {
+                val moodEntry = jsonArray.getJSONObject(i)
+                val moodDate = moodEntry.getString("date")
+
+                // Check if mood entry is from today
+                if (moodDate == today) {
+                    moodEntriesToday++
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        val moodProgress = ((moodEntriesToday.toDouble() / moodGoal) * 100).toInt()
+
+        binding.progressMood.progress = minOf(moodProgress, 100)
+        binding.tvMoodPercent.text = "$moodProgress%"
+        binding.tvMoodLabel.text = "😊 Mood ($moodEntriesToday/$moodGoal entries)"
+    }
+
+    private fun updateCyclingProgress() {
+        val cyclingSessionsJson = sharedPreferences.getString("cycling_sessions", "[]")
+        var totalDistance = 0.0
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+        try {
+            val jsonArray = JSONArray(cyclingSessionsJson)
+
+            for (i in 0 until jsonArray.length()) {
+                val session = jsonArray.getJSONObject(i)
+                val sessionDate = session.getString("date")
+
+                if (sessionDate == today) {
+                    totalDistance += session.getDouble("distance")
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        val cyclingProgress = ((totalDistance / cyclingGoal) * 100).toInt()
+
+        binding.progressCycling.progress = minOf(cyclingProgress, 100)
+        binding.tvCyclingPercent.text = "$cyclingProgress%"
+        binding.tvCyclingLabel.text = "🚴 Cycling (${"%.1f".format(totalDistance)}/$cyclingGoal km)"
     }
 
     private fun setupClickListeners() {
         // Quick Actions
-        binding.cardHabits.setOnClickListener {
-            Toast.makeText(this, "Opening Habits", Toast.LENGTH_SHORT).show()
-            // Navigate to Habits page
-        }
-
-        binding.cardMood.setOnClickListener {
-            Toast.makeText(this, "Opening Mood Journal", Toast.LENGTH_SHORT).show()
-            // Navigate to Mood page
-        }
-
-        binding.cardStats.setOnClickListener {
-            Toast.makeText(this, "Opening Statistics", Toast.LENGTH_SHORT).show()
-            // Navigate to Stats page
-        }
-
-        binding.cardHydration.setOnClickListener {
-            Toast.makeText(this, "Opening Hydration", Toast.LENGTH_SHORT).show()
-            // Navigate to Hydration page
-        }
-
-        // Profile icon click
-        binding.ivProfile.setOnClickListener {
-            showProfileMenu()
-        }
-
         binding.cardHabits.setOnClickListener {
             startActivity(Intent(this, HabitsActivity::class.java))
         }
@@ -121,15 +198,22 @@ class MainActivity : AppCompatActivity() {
         binding.cardMood.setOnClickListener {
             startActivity(Intent(this, MoodActivity::class.java))
         }
+
         binding.cardStats.setOnClickListener {
             startActivity(Intent(this, StatsActivity::class.java))
         }
+
         binding.cardHydration.setOnClickListener {
             startActivity(Intent(this, HydrationActivity::class.java))
         }
-        // Add to setupClickListeners() in MainActivity
+
         binding.cardCycling.setOnClickListener {
             startActivity(Intent(this, CyclingActivity::class.java))
+        }
+
+        // Profile icon click
+        binding.ivProfile.setOnClickListener {
+            showProfileMenu()
         }
     }
 
@@ -254,6 +338,4 @@ class MainActivity : AppCompatActivity() {
 
         Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show()
     }
-
-
 }

@@ -106,7 +106,7 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Water Goal -->
+            <!-- Hydration Goal -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -122,10 +122,11 @@
                     android:gravity="center_vertical">
 
                     <TextView
+                        android:id="@+id/tvWaterLabel"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="💧 Hydration"
+                        android:text="💧 Hydration (0/8 glasses)"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -133,7 +134,7 @@
                         android:id="@+id/tvWaterPercent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="60%"
+                        android:text="0%"
                         android:textColor="@color/primary_color"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -146,12 +147,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="8dp"
                     android:layout_marginTop="8dp"
-                    android:progress="60"
-                    android:progressTint="@color/primary_color" />
+                    android:progress="0"
+                    android:progressTint="@color/hydration_progress" />
 
             </LinearLayout>
 
-            <!-- Steps Goal -->
+            <!-- Mood Goal -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -167,18 +168,19 @@
                     android:gravity="center_vertical">
 
                     <TextView
+                        android:id="@+id/tvMoodLabel"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="👣 Steps"
+                        android:text="😊 Mood (0/0 positive)"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/tvStepsPercent"
+                        android:id="@+id/tvMoodPercent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="40%"
+                        android:text="0%"
                         android:textColor="@color/primary_color"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -186,17 +188,17 @@
                 </LinearLayout>
 
                 <ProgressBar
-                    android:id="@+id/progressSteps"
+                    android:id="@+id/progressMood"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="8dp"
                     android:layout_marginTop="8dp"
-                    android:progress="40"
-                    android:progressTint="@color/primary_color" />
+                    android:progress="0"
+                    android:progressTint="@color/mood_progress" />
 
             </LinearLayout>
 
-            <!-- Sleep Goal -->
+            <!-- Cycling Goal -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -212,18 +214,19 @@
                     android:gravity="center_vertical">
 
                     <TextView
+                        android:id="@+id/tvCyclingLabel"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="😴 Sleep"
+                        android:text="🚴 Cycling (0.0/5 km)"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/tvSleepPercent"
+                        android:id="@+id/tvCyclingPercent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="80%"
+                        android:text="0%"
                         android:textColor="@color/primary_color"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -231,13 +234,13 @@
                 </LinearLayout>
 
                 <ProgressBar
-                    android:id="@+id/progressSleep"
+                    android:id="@+id/progressCycling"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="8dp"
                     android:layout_marginTop="8dp"
-                    android:progress="80"
-                    android:progressTint="@color/primary_color" />
+                    android:progress="0"
+                    android:progressTint="@color/cycling_primary" />
 
             </LinearLayout>
 

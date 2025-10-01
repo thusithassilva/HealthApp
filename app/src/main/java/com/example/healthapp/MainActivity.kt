@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity() {
     private fun showProfileMenu() {
         // Simple profile menu implementation
         val popupMenu = android.widget.PopupMenu(this, binding.ivProfile)
-        popupMenu.menu.add(Menu.NONE, 1, Menu.NONE, "Update Profile")
+        popupMenu.menu.add(Menu.NONE, 1, Menu.NONE, "V Profile")
         popupMenu.menu.add(Menu.NONE, 2, Menu.NONE, "Logout")
 
         popupMenu.setOnMenuItemClickListener { item ->

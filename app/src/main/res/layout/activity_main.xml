@@ -126,7 +126,7 @@
 
             <!-- Date with Professional Format -->
             <TextView
-                android:id="@+id/tvDate"
+                android:id="@+id/tvTodayDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Monday, December 25, 2024"

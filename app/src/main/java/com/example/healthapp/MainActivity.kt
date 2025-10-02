@@ -65,7 +65,8 @@ class MainActivity : AppCompatActivity() {
         binding.tvUserEmail.text = userEmail
 
         // Set today's date
-        binding.tvDate.text = getCurrentDate()
+        val today = SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault()).format(Date())
+        binding.tvTodayDate.text = today
 
         // Set up goals with real data
         updateGoalsProgress()

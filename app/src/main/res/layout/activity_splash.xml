@@ -1,44 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_color">
+    android:orientation="vertical"
+    android:background="@color/primary_blue"
+    android:gravity="center">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:padding="32dp">
 
-        <!-- App Icon/Logo -->
+        <!-- App Logo -->
         <ImageView
             android:id="@+id/ivAppLogo"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/ic_wellness_logo"
-            android:contentDescription="@string/app_logo" />
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:src="@drawable/logo1"
+            android:contentDescription="HealthGo Logo"
+            android:layout_marginBottom="24dp" />
 
         <!-- App Name -->
         <TextView
             android:id="@+id/tvAppName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
+            android:text="HealthGo"
             android:textColor="@color/white"
-            android:textSize="28sp"
+            android:textSize="32sp"
             android:textStyle="bold"
-            android:layout_marginTop="16dp" />
+            android:letterSpacing="0.02"
+            android:layout_marginBottom="8dp" />
 
-        <!-- Tagline -->
+        <!-- App Bio/Tagline -->
         <TextView
             android:id="@+id/tvTagline"
-            android:layout_width="wrap_content"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:text="@string/tagline"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:layout_marginTop="8dp" />
+            android:text="Your Personal Health Companion - Track, Improve, Succeed"
+            android:textColor="@color/light_blue_white"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:lineSpacingExtra="4dp"
+            android:paddingHorizontal="16dp" />
 
     </LinearLayout>
 
@@ -47,9 +53,8 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
-        android:layout_centerHorizontal="true"
-        android:indeterminateTint="@color/white" />
+        android:layout_marginTop="80dp"
+        android:indeterminateTint="@color/white"
+        android:indeterminate="true" />
 
-</RelativeLayout>
+</LinearLayout>

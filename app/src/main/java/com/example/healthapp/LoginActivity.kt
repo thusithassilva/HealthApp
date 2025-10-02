@@ -3,12 +3,14 @@ package com.example.healthapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.widget.Toast
 import com.example.healthapp.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
+    private var isPasswordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +19,7 @@ class LoginActivity : AppCompatActivity() {
 
         checkIfUserRegistered()
         setupClickListeners()
+        setupPasswordVisibility()
     }
 
     private fun checkIfUserRegistered() {
@@ -43,6 +46,32 @@ class LoginActivity : AppCompatActivity() {
         binding.tvForgotPasscode.setOnClickListener {
             Toast.makeText(this, "Please re-register with new passcode", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun setupPasswordVisibility() {
+        // Set initial state to show dots
+        binding.etPasscode.transformationMethod = PasswordTransformationMethod.getInstance()
+
+        // Set end icon for password visibility toggle
+        binding.tilPasscode.setEndIconOnClickListener {
+            togglePasswordVisibility()
+        }
+    }
+
+    private fun togglePasswordVisibility() {
+        if (isPasswordVisible) {
+            // Hide password
+            binding.etPasscode.transformationMethod = PasswordTransformationMethod.getInstance()
+            binding.tilPasscode.endIconDrawable = getDrawable(com.google.android.material.R.drawable.design_ic_visibility)
+        } else {
+            // Show password
+            binding.etPasscode.transformationMethod = null
+            binding.tilPasscode.endIconDrawable = getDrawable(com.google.android.material.R.drawable.design_ic_visibility_off)
+        }
+        isPasswordVisible = !isPasswordVisible
+
+        // Move cursor to the end
+        binding.etPasscode.setSelection(binding.etPasscode.text?.length ?: 0)
     }
 
     private fun loginUser() {

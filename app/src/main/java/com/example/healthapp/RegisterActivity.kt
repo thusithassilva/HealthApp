@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.example.healthapp.databinding.ActivityRegisterBinding
+import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -56,6 +57,11 @@ class RegisterActivity : AppCompatActivity() {
             return false
         }
 
+        if (!isValidEmail(email)) {
+            binding.etEmail.error = "Please enter a valid email address"
+            return false
+        }
+
         if (passcode.length != 4) {
             binding.etPasscode.error = "Passcode must be 4 digits"
             return false
@@ -67,6 +73,13 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         return true
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\$"
+        val pattern = Pattern.compile(emailRegex)
+        val matcher = pattern.matcher(email)
+        return matcher.matches()
     }
 
     private fun saveUserDetails(name: String, email: String, passcode: String) {

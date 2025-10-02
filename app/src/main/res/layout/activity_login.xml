@@ -94,6 +94,7 @@
 
                 <!-- Passcode Input -->
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPasscode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="24dp"
@@ -103,14 +104,16 @@
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxStrokeColor="@color/primary_blue"
-                    app:hintTextColor="@color/primary_blue">
+                    app:hintTextColor="@color/primary_blue"
+                    app:endIconMode="password_toggle"
+                    app:endIconTint="@color/primary_blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etPasscode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Enter 4-Digit Passcode"
-                        android:inputType="number"
+                        android:inputType="numberPassword"
                         android:maxLines="1"
                         android:maxLength="4"
                         android:textColor="@color/primary_blue"

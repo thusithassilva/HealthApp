@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
 import android.widget.Toast
+import android.widget.LinearLayout
 import com.example.healthapp.databinding.ActivityHydrationBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -38,6 +39,7 @@ class HydrationActivity : AppCompatActivity() {
         setupBottomNavigation()
         updateUI()
         updateReminderUI()
+        updateWeeklyChart()
     }
 
     private fun setupToolbar() {
@@ -61,7 +63,7 @@ class HydrationActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        // Add water buttons
+        // Add water buttons - using CardView click listeners
         binding.btnAddGlass.setOnClickListener {
             addWater(1.0f)
         }
@@ -146,9 +148,10 @@ class HydrationActivity : AppCompatActivity() {
         currentWaterIntake += amount
         saveHydrationData()
         updateUI()
+        updateWeeklyChart()
 
-        val message = if (amount == 0.5f) "Half glass added!" else "Glass of water added!"
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        // Removed success toast messages for add water buttons
+        // Only show error toast for maximum limit (kept above)
 
         // Check if goal is reached
         if (currentWaterIntake >= dailyWaterGoal) {
@@ -162,11 +165,11 @@ class HydrationActivity : AppCompatActivity() {
             currentWaterIntake = maxOf(0.0f, currentWaterIntake - amount)
             saveHydrationData()
             updateUI()
+            updateWeeklyChart()
             binding.tvCongratulations.visibility = android.view.View.GONE
-            Toast.makeText(this, "Water removed", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "No water to remove!", Toast.LENGTH_SHORT).show()
+            // Removed toast message for remove water button
         }
+        // Removed else condition toast for "No water to remove"
     }
 
     private fun setReminderInterval(seconds: Int) {
@@ -190,6 +193,7 @@ class HydrationActivity : AppCompatActivity() {
         currentWaterIntake = 0.0f
         saveHydrationData()
         updateUI()
+        updateWeeklyChart()
         binding.tvCongratulations.visibility = android.view.View.GONE
         Toast.makeText(this, "Daily intake reset", Toast.LENGTH_SHORT).show()
     }
@@ -233,6 +237,52 @@ class HydrationActivity : AppCompatActivity() {
             else -> "Let's start hydrating! 💧"
         }
         binding.tvHydrationStatus.text = statusMessage
+    }
+
+    private fun updateWeeklyChart() {
+        // Get water intake for the past 7 days
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        val weeklyData = mutableListOf<Float>()
+
+        // Get data for last 7 days
+        for (i in 6 downTo 0) {
+            calendar.time = Date()
+            calendar.add(Calendar.DAY_OF_YEAR, -i)
+            val date = dateFormat.format(calendar.time)
+            val waterIntake = sharedPreferences.getFloat("water_intake_$date", 0f)
+            weeklyData.add(waterIntake)
+        }
+
+        // Update chart bars
+        updateChartBar(binding.barMon, weeklyData[0])
+        updateChartBar(binding.barTue, weeklyData[1])
+        updateChartBar(binding.barWed, weeklyData[2])
+        updateChartBar(binding.barThu, weeklyData[3])
+        updateChartBar(binding.barFri, weeklyData[4])
+        updateChartBar(binding.barSat, weeklyData[5])
+        updateChartBar(binding.barSun, weeklyData[6])
+    }
+
+    private fun updateChartBar(barView: android.view.View, waterIntake: Float) {
+        val progress = ((waterIntake * 100) / dailyWaterGoal).toInt()
+
+        // Calculate height based on progress (minimum 10% for visibility)
+        val maxHeight = 100 // 100% of available space
+        val barHeight = maxOf((progress * maxHeight) / 100, 10)
+
+        val layoutParams = barView.layoutParams
+        layoutParams.height = barHeight
+        barView.layoutParams = layoutParams
+
+        // Update bar color based on progress
+        val barColor = when {
+            progress >= 100 -> R.color.hydration_progress
+            progress >= 50 -> R.color.hydration_light
+            else -> R.color.light_gray
+        }
+        barView.setBackgroundColor(getColor(barColor))
     }
 
     private fun updateReminderUI() {
@@ -346,6 +396,7 @@ class HydrationActivity : AppCompatActivity() {
         if (reminderEnabled) {
             startWaterReminder()
         }
+        updateWeeklyChart()
     }
 
     override fun onPause() {

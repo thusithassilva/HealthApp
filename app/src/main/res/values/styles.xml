@@ -12,6 +12,6 @@
 
     <style name="BoldToolbarTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textStyle">bold</item>
-        <item name="fontFamily">sans-serif-medium</item>    
+        <item name="fontFamily">sans-serif-medium</item>
     </style>
 </resources>

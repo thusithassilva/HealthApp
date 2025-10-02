@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import com.example.healthapp.databinding.ActivityProfileBinding
 
@@ -72,6 +73,12 @@ class ProfileActivity : AppCompatActivity() {
             return
         }
 
+        // Email validation
+        if (!isValidEmail(newEmail)) {
+            binding.etEmail.error = "Please enter a valid email address"
+            return
+        }
+
         val editor = sharedPreferences.edit()
         editor.putString("user_name", newName)
         editor.putString("user_email", newEmail)
@@ -121,6 +128,11 @@ class ProfileActivity : AppCompatActivity() {
         binding.etCurrentPasscode.setText("")
         binding.etNewPasscode.setText("")
         binding.etConfirmPasscode.setText("")
+    }
+
+    // Email validation function
+    private fun isValidEmail(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     override fun onBackPressed() {

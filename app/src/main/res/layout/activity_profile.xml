@@ -233,7 +233,9 @@
                         app:boxCornerRadiusTopEnd="12dp"
                         app:boxCornerRadiusTopStart="12dp"
                         app:boxStrokeColor="@color/accent_blue"
-                        app:hintTextColor="@color/gray">
+                        app:hintTextColor="@color/gray"
+                        app:endIconMode="password_toggle"
+                        app:endIconTint="@color/accent_blue">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCurrentPasscode"
@@ -259,7 +261,9 @@
                         app:boxCornerRadiusTopEnd="12dp"
                         app:boxCornerRadiusTopStart="12dp"
                         app:boxStrokeColor="@color/accent_blue"
-                        app:hintTextColor="@color/gray">
+                        app:hintTextColor="@color/gray"
+                        app:endIconMode="password_toggle"
+                        app:endIconTint="@color/accent_blue">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etNewPasscode"
@@ -285,7 +289,9 @@
                         app:boxCornerRadiusTopEnd="12dp"
                         app:boxCornerRadiusTopStart="12dp"
                         app:boxStrokeColor="@color/accent_blue"
-                        app:hintTextColor="@color/gray">
+                        app:hintTextColor="@color/gray"
+                        app:endIconMode="password_toggle"
+                        app:endIconTint="@color/accent_blue">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etConfirmPasscode"

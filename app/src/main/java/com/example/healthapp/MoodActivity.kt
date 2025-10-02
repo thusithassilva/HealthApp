@@ -54,6 +54,7 @@ class MoodActivity : AppCompatActivity() {
 
     private fun setupMoodList() {
         binding.rvMoodEntries.layoutManager = LinearLayoutManager(this)
+        binding.rvMoodEntries.isNestedScrollingEnabled = false // Add this line
         moodAdapter = MoodAdapter(moodEntries) { position ->
             deleteMoodEntry(position)
         }

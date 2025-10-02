@@ -38,13 +38,25 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:id="@+id/ivDelete"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_delete"
+                android:contentDescription="Delete"
+                android:tint="@color/gray"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true" />
+
             <TextView
                 android:id="@+id/tvDateTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="25/12/2024 at 14:30"
                 android:textColor="@color/gray"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:layout_marginStart="8dp" />
 
         </LinearLayout>
 

@@ -4,7 +4,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.setPadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.healthapp.databinding.ActivityMoodBinding
 import org.json.JSONArray
@@ -20,8 +24,8 @@ class MoodActivity : AppCompatActivity() {
     private val moodEntries = mutableListOf<MoodEntry>()
 
     // Emoji options for mood selection
-    private val moodEmojis = listOf("😊", "😄", "😍", "😐", "😔", "😢", "😠", "😴", "🤒", "🌟")
-    private val moodLabels = listOf("Happy", "Excited", "Loved", "Neutral", "Sad", "Crying", "Angry", "Tired", "Sick", "Great")
+    private val moodEmojis = listOf("😊", "😄", "😍", "😐", "😔", "😢", "😠", "😴", "🤒", "🌟", "😎", "🤩", "🥳", "😌", "🤗", "🙂", "😕", "😟", "😤", "🥱")
+    private val moodLabels = listOf("Happy", "Excited", "Loved", "Neutral", "Sad", "Crying", "Angry", "Tired", "Sick", "Great", "Cool", "Starstruck", "Celebrating", "Relaxed", "Hugging", "Slightly Smiling", "Confused", "Worried", "Frustrated", "Yawning")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +54,9 @@ class MoodActivity : AppCompatActivity() {
 
     private fun setupMoodList() {
         binding.rvMoodEntries.layoutManager = LinearLayoutManager(this)
-        moodAdapter = MoodAdapter(moodEntries)
+        moodAdapter = MoodAdapter(moodEntries) { position ->
+            deleteMoodEntry(position)
+        }
         binding.rvMoodEntries.adapter = moodAdapter
     }
 
@@ -60,20 +66,25 @@ class MoodActivity : AppCompatActivity() {
         emojiGrid.removeAllViews()
 
         moodEmojis.forEachIndexed { index, emoji ->
-            val emojiButton = android.widget.Button(this).apply {
+            val emojiButton = TextView(this).apply {
                 text = emoji
-                textSize = 20f
+                textSize = 40f // Large, user-friendly size
+                gravity = Gravity.CENTER
                 setOnClickListener {
                     selectMood(emoji, moodLabels[index])
                 }
-                setBackgroundResource(R.drawable.emoji_button_bg)
-                layoutParams = android.widget.LinearLayout.LayoutParams(
-                    0,
-                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-                    1f
+                // Remove background for clean look
+                background = null
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    setMargins(8, 8, 8, 8)
+                    setMargins(16, 8, 16, 8)
                 }
+                // Add padding for comfortable touch area
+                setPadding(32, 16, 32, 16)
+                // Enable horizontal scrolling by making content wider than viewport
+                isHorizontalScrollBarEnabled = false
             }
             emojiGrid.addView(emojiButton)
         }
@@ -83,22 +94,13 @@ class MoodActivity : AppCompatActivity() {
         binding.btnAddMoodNote.setOnClickListener {
             addMoodEntryWithNote()
         }
-
-        binding.fabAddQuickMood.setOnClickListener {
-            // Quick mood without note
-            if (binding.etMoodNote.text.toString().trim().isNotEmpty()) {
-                addMoodEntryWithNote()
-            } else {
-                Toast.makeText(this, "Please select a mood first", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     private fun setupBottomNavigation() {
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_habits -> {
-                    startActivity(android.content.Intent(this, HabitsActivity::class.java))
+                    startActivity(Intent(this, HabitsActivity::class.java))
                     finish()
                     true
                 }
@@ -167,6 +169,16 @@ class MoodActivity : AppCompatActivity() {
         binding.btnAddMoodNote.isEnabled = false
 
         Toast.makeText(this, "Mood recorded!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun deleteMoodEntry(position: Int) {
+        if (position in 0 until moodEntries.size) {
+            moodEntries.removeAt(position)
+            moodAdapter.notifyItemRemoved(position)
+            saveMoodEntriesToPreferences()
+            updateMoodStats()
+            Toast.makeText(this, "Mood entry deleted", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun updateMoodStats() {

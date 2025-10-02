@@ -7,14 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class OnboardingAdapter(private val pages: List<OnboardingPage>) :
+class OnboardingAdapter(private val items: List<OnboardingActivity.OnboardingItem>) :
     RecyclerView.Adapter<OnboardingAdapter.OnboardingViewHolder>() {
-
-    class OnboardingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val image: ImageView = itemView.findViewById(R.id.ivOnboarding)
-        val title: TextView = itemView.findViewById(R.id.tvTitle)
-        val description: TextView = itemView.findViewById(R.id.tvDescription)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OnboardingViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -23,11 +17,20 @@ class OnboardingAdapter(private val pages: List<OnboardingPage>) :
     }
 
     override fun onBindViewHolder(holder: OnboardingViewHolder, position: Int) {
-        val page = pages[position]
-        holder.image.setImageResource(page.imageRes)
-        holder.title.text = page.title
-        holder.description.text = page.description
+        holder.bind(items[position])
     }
 
-    override fun getItemCount(): Int = pages.size
+    override fun getItemCount(): Int = items.size
+
+    class OnboardingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val imageView: ImageView = itemView.findViewById(R.id.ivOnboarding)
+        private val titleView: TextView = itemView.findViewById(R.id.tvTitle)
+        private val descriptionView: TextView = itemView.findViewById(R.id.tvDescription)
+
+        fun bind(item: OnboardingActivity.OnboardingItem) {
+            imageView.setImageResource(item.imageRes)
+            titleView.text = item.title
+            descriptionView.text = item.description
+        }
+    }
 }

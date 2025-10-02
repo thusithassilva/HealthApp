@@ -1,96 +1,142 @@
 package com.example.healthapp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.healthapp.databinding.ActivityOnboardingBinding
-
 
 class OnboardingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOnboardingBinding
-    private lateinit var onboardingAdapter: OnboardingAdapter
+    private lateinit var sharedPreferences: SharedPreferences
+
+    private val onboardingItems = listOf(
+        OnboardingItem(
+            imageRes = R.drawable.ob1,
+            title = "Track Your Health Journey",
+            description = "Monitor your daily habits, mood, hydration, and cycling activities all in one beautiful interface."
+        ),
+        OnboardingItem(
+            imageRes = R.drawable.ob2,
+            title = "Build Healthy Habits",
+            description = "Create meaningful routines and track your progress with intuitive tools designed for success."
+        ),
+        OnboardingItem(
+            imageRes = R.drawable.ob3,
+            title = "Achieve Wellness Goals",
+            description = "Set personal targets and celebrate your achievements on the path to better health."
+        )
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupOnboardingPages()
-        setupIndicators()
-        setupClicks()
+        sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+
+        setupViewPager()
+        setupClickListeners()
+        updateIndicators(0)
     }
 
-    private fun setupOnboardingPages() {
-        val onboardingPages = listOf(
-            OnboardingPage(
-                "Track Your Habits",
-                "Monitor daily wellness activities and build healthy routines",
-                R.drawable.ic_habits
-            ),
-            OnboardingPage(
-                "Log Your Mood",
-                "Record your daily mood with emojis and track your emotional journey",
-                R.drawable.ic_mood
-            ),
-            OnboardingPage(
-                "Stay Hydrated",
-                "Get reminders to drink water and maintain your hydration goals",
-                R.drawable.ic_water
-            )
-        )
+    private fun setupViewPager() {
+        val adapter = OnboardingAdapter(onboardingItems)
+        binding.viewPagerOnboarding.adapter = adapter
 
-        onboardingAdapter = OnboardingAdapter(onboardingPages)
-        binding.viewPagerOnboarding.adapter = onboardingAdapter
-    }
-
-    private fun setupIndicators() {
         binding.viewPagerOnboarding.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 updateIndicators(position)
-
-                // Show/hide buttons based on position
-                if (position == onboardingAdapter.itemCount - 1) {
-                    binding.btnNext.text = "Continue to Login"
-                } else {
-                    binding.btnNext.text = "Next"
-                }
+                updateButtonText(position)
             }
         })
     }
 
+    private fun setupClickListeners() {
+        binding.btnSkip.setOnClickListener {
+            completeOnboarding()
+        }
+
+        binding.btnNext.setOnClickListener {
+            val currentItem = binding.viewPagerOnboarding.currentItem
+            if (currentItem < onboardingItems.size - 1) {
+                binding.viewPagerOnboarding.currentItem = currentItem + 1
+            } else {
+                completeOnboarding()
+            }
+        }
+    }
+
     private fun updateIndicators(position: Int) {
-        val indicators = arrayOf(binding.indicator1, binding.indicator2, binding.indicator3)
+        val indicators = listOf(binding.indicator1, binding.indicator2, binding.indicator3)
 
         indicators.forEachIndexed { index, indicator ->
             if (index == position) {
-                indicator.setBackgroundResource(R.drawable.indicator_active)
+                if (index == 0) {
+                    indicator.setBackgroundResource(R.drawable.indicator_active_rect)
+                } else {
+                    indicator.setBackgroundResource(R.drawable.indicator_active)
+                }
             } else {
                 indicator.setBackgroundResource(R.drawable.indicator_inactive)
             }
         }
     }
 
-    private fun setupClicks() {
-        binding.btnNext.setOnClickListener {
-            if (binding.viewPagerOnboarding.currentItem < onboardingAdapter.itemCount - 1) {
-                binding.viewPagerOnboarding.currentItem += 1
-            } else {
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            }
+    private fun updateButtonText(position: Int) {
+        binding.btnNext.text = if (position == onboardingItems.size - 1) "Get Started" else "Next"
+    }
+
+    private fun completeOnboarding() {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("onboarding_completed", true)
+        editor.apply()
+
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
+    }
+
+    // Move the OnboardingItem data class inside the activity
+    data class OnboardingItem(
+        val imageRes: Int,
+        val title: String,
+        val description: String
+    )
+
+    // Move the adapter class inside the activity
+    class OnboardingAdapter(private val items: List<OnboardingItem>) :
+        RecyclerView.Adapter<OnboardingAdapter.OnboardingViewHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OnboardingViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_onboarding, parent, false)
+            return OnboardingViewHolder(view)
         }
 
-        binding.btnSkip.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+        override fun onBindViewHolder(holder: OnboardingViewHolder, position: Int) {
+            holder.bind(items[position])
+        }
+
+        override fun getItemCount(): Int = items.size
+
+        class OnboardingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            private val imageView: ImageView = itemView.findViewById(R.id.ivOnboarding)
+            private val titleView: TextView = itemView.findViewById(R.id.tvTitle)
+            private val descriptionView: TextView = itemView.findViewById(R.id.tvDescription)
+
+            fun bind(item: OnboardingItem) {
+                imageView.setImageResource(item.imageRes)
+                titleView.text = item.title
+                descriptionView.text = item.description
+            }
         }
     }
 }
-
-data class OnboardingPage(
-    val title: String,
-    val description: String,
-    val imageRes: Int
-)

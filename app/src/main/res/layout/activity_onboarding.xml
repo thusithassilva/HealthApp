@@ -1,21 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/light_background">
 
-    <!-- Skip Button -->
-    <Button
-        android:id="@+id/btnSkip"
-        android:layout_width="wrap_content"
+    <!-- Header with Logo and App Name -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_margin="16dp"
-        android:text="Skip"
-        android:textColor="@color/primary_color"
-        android:background="@android:color/transparent"
-        android:textAllCaps="false" />
+        android:orientation="horizontal"
+        android:padding="20dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/logo2"
+            android:contentDescription="App Logo" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HealthGo"
+                android:textColor="@color/primary_blue"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Health Companion"
+                android:textColor="@color/gray"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <!-- Professional Skip Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSkip"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="SKIP"
+            android:textColor="@color/primary_blue"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            app:cornerRadius="18dp"
+            app:backgroundTint="@color/light_blue"
+            app:strokeColor="@color/primary_blue"
+            app:strokeWidth="1dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
+
+    </LinearLayout>
 
     <!-- ViewPager for onboarding pages -->
     <androidx.viewpager2.widget.ViewPager2
@@ -24,47 +70,63 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <!-- Indicators -->
+    <!-- Bottom Section -->
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginBottom="20dp">
-
-        <View
-            android:id="@+id/indicator1"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_margin="4dp"
-            android:background="@drawable/indicator_active" />
-
-        <View
-            android:id="@+id/indicator2"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_margin="4dp"
-            android:background="@drawable/indicator_inactive" />
-
-        <View
-            android:id="@+id/indicator3"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_margin="4dp"
-            android:background="@drawable/indicator_inactive" />
-
-    </LinearLayout>
-
-    <!-- Next Button -->
-    <Button
-        android:id="@+id/btnNext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="Next"
-        android:textColor="@color/white"
-        android:background="@color/primary_color"
-        android:textAllCaps="false"
-        android:textSize="16sp" />
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:background="@color/white"
+        android:elevation="8dp">
+
+        <!-- Indicators -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginBottom="32dp">
+
+            <View
+                android:id="@+id/indicator1"
+                android:layout_width="24dp"
+                android:layout_height="8dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/indicator_active_rect" />
+
+            <View
+                android:id="@+id/indicator2"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/indicator_inactive" />
+
+            <View
+                android:id="@+id/indicator3"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/indicator_inactive" />
+
+        </LinearLayout>
+
+        <!-- Next Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNext"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Next"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.02"
+            app:cornerRadius="16dp"
+            app:backgroundTint="@color/primary_blue"
+            app:elevation="6dp"
+            app:icon="@drawable/ic_arrow_forward"
+            app:iconTint="@color/white"
+            app:iconGravity="end" />
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -154,7 +154,7 @@ class StatsActivity : AppCompatActivity() {
             // Update UI
             binding.tvTotalMoodEntries.text = totalMoodEntries.toString()
             binding.tvLatestMood.text = latestMood
-            binding.tvLatestMoodDate.text = latestMoodDate
+            //binding.tvLatestMoodDate.text = latestMoodDate
 
             if (mostFrequentMood != null) {
                 binding.tvMostFrequentMood.text = "${mostFrequentMood.key} (${mostFrequentMood.value} times)"
@@ -171,7 +171,7 @@ class StatsActivity : AppCompatActivity() {
             e.printStackTrace()
             binding.tvTotalMoodEntries.text = "0"
             binding.tvLatestMood.text = "No entries"
-            binding.tvLatestMoodDate.text = ""
+            //binding.tvLatestMoodDate.text = ""
             binding.tvMostFrequentMood.text = "No data"
             binding.tvAvgMoodScore.text = "0.0/10"
             binding.progressAvgMood.progress = 0

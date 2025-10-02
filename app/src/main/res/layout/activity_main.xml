@@ -14,8 +14,9 @@
         android:background="@color/primary_blue"
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
         app:menu="@menu/main_menu"
-        app:title="Wellness Tracker"
-        app:titleTextColor="@color/white" />
+        app:title="HealthGo"
+        app:titleTextColor="@color/white"
+        app:titleTextAppearance="@style/BoldToolbarTitle" />
 
     <ScrollView
         android:layout_width="match_parent"

@@ -199,10 +199,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, MoodActivity::class.java))
         }
 
-        binding.cardStats.setOnClickListener {
-            startActivity(Intent(this, StatsActivity::class.java))
-        }
-
         binding.cardHydration.setOnClickListener {
             startActivity(Intent(this, HydrationActivity::class.java))
         }

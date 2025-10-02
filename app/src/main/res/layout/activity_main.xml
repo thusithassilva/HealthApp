@@ -123,19 +123,19 @@
 
             </LinearLayout>
 
-            <!-- Date -->
+            <!-- Date with Professional Format -->
             <TextView
                 android:id="@+id/tvDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Today, 25/12/2024"
-                android:textColor="@color/accent_blue"
+                android:text="Monday, December 25, 2024"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="24dp"
                 android:gravity="center"
-                android:background="@color/light_blue"
-                android:paddingVertical="8dp"
+                android:background="@drawable/date_background_professional"
+                android:paddingVertical="12dp"
                 android:paddingHorizontal="16dp" />
 
             <!-- Today's Goals Section -->
@@ -176,7 +176,8 @@
                             android:layout_weight="1"
                             android:text="💧 Hydration (0/8 glasses)"
                             android:textColor="@color/dark_gray"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tvWaterPercent"
@@ -231,7 +232,8 @@
                             android:layout_weight="1"
                             android:text="😊 Mood (0/0 positive)"
                             android:textColor="@color/dark_gray"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tvMoodPercent"
@@ -284,15 +286,16 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="🚴 Cycling (0.0/5 km)"
+                            android:text="🚴 Cycling (2.5/5 km)"
                             android:textColor="@color/dark_gray"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tvCyclingPercent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0%"
+                            android:text="50%"
                             android:textColor="@color/accent_blue"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -305,7 +308,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="8dp"
                         android:layout_marginTop="8dp"
-                        android:progress="0"
+                        android:progress="50"
                         android:progressTint="@color/accent_blue"
                         android:progressBackgroundTint="@color/light_gray" />
 
@@ -327,7 +330,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="2"
-                android:rowCount="3"
+                android:rowCount="2"
                 android:alignmentMode="alignMargins"
                 android:columnOrderPreserved="false"
                 android:padding="8dp">
@@ -403,46 +406,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Mood"
-                            android:textColor="@color/white"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="8dp" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <!-- Stats Card -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardStats"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="6dp"
-                    app:cardBackgroundColor="@color/white">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="@drawable/card_gradient_accent">
-
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:src="@drawable/ic_goals"
-                            android:contentDescription="Stats"
-                            android:tint="@color/white" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Stats"
                             android:textColor="@color/white"
                             android:textSize="14sp"
                             android:textStyle="bold"

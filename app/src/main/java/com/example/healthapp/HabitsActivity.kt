@@ -60,9 +60,6 @@ class HabitsActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         // FAB click listener
-        binding.fabAddHabit.setOnClickListener {
-            showAddHabitDialog()
-        }
 
         // Add button in the card click listener
         binding.btnAddHabit.setOnClickListener {

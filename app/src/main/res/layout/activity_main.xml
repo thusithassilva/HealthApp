@@ -6,12 +6,12 @@
     android:orientation="vertical"
     android:background="@color/white">
 
-    <!-- Toolbar -->
+    <!-- Toolbar - 60% Primary Color -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/primary_color"
+        android:background="@color/primary_blue"
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
         app:menu="@menu/main_menu"
         app:title="Wellness Tracker"
@@ -21,7 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="@color/light_background">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,20 +34,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="24dp">
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/header_background_dark_blue_gradient"
+                android:paddingVertical="20dp"
+                android:paddingHorizontal="16dp"
+                android:elevation="8dp"
+                android:gravity="center_vertical">
 
-                <!-- Profile Icon -->
-                <ImageView
+                <!-- Profile Icon (Unchanged) -->
+                <LinearLayout
                     android:id="@+id/ivProfile"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic_wellness_logo"
-                    android:background="@color/gray_light"
-                    android:padding="12dp"
-                    android:contentDescription="Profile"
-                    android:layout_marginEnd="16dp"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/profile_circle_bg_dark"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_person_profile"
+                        android:contentDescription="Profile"
+                        android:tint="@color/white" />
+
+                </LinearLayout>
 
                 <!-- User Info -->
                 <LinearLayout
@@ -54,34 +64,61 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="16dp">
 
+                    <!-- Greeting with improved styling -->
                     <TextView
                         android:id="@+id/tvGreeting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Good Morning"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/light_blue_white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.02"
+                        android:shadowColor="@color/dark_shadow"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="2" />
 
+                    <!-- User Name with enhanced styling -->
                     <TextView
                         android:id="@+id/tvUserName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="User Name"
-                        android:textColor="@color/gray"
-                        android:textSize="14sp" />
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp"
+                        android:letterSpacing="0.01"
+                        android:shadowColor="@color/dark_shadow"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="2" />
 
+                    <!-- User Email with improved styling -->
                     <TextView
                         android:id="@+id/tvUserEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="user@email.com"
-                        android:textColor="@color/gray"
-                        android:textSize="12sp" />
+                        android:textColor="@color/light_blue_white"
+                        android:textSize="14sp"
+                        android:layout_marginTop="2dp"
+                        android:letterSpacing="0.01" />
 
                 </LinearLayout>
+
+                <!-- Optional: Add a small decorative element -->
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_lock"
+                    android:contentDescription="Notifications"
+                    android:tint="@color/white"
+                    android:layout_marginStart="8dp" />
 
             </LinearLayout>
 
@@ -91,165 +128,196 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Today, 25/12/2024"
-                android:textColor="@color/primary_color"
+                android:textColor="@color/accent_blue"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:background="@color/light_blue"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="16dp" />
 
             <!-- Today's Goals Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Today's Goals"
-                android:textColor="@color/black"
+                android:textColor="@color/primary_blue"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="16dp" />
 
             <!-- Hydration Goal -->
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginBottom="16dp"
-                android:padding="16dp"
-                android:background="@drawable/goal_background">
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                    <TextView
-                        android:id="@+id/tvWaterLabel"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="💧 Hydration (0/8 glasses)"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/tvWaterPercent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0%"
-                        android:textColor="@color/primary_color"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tvWaterLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="💧 Hydration (0/8 glasses)"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tvWaterPercent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0%"
+                            android:textColor="@color/accent_blue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progressWater"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:layout_marginTop="8dp"
+                        android:progress="0"
+                        android:progressTint="@color/accent_blue"
+                        android:progressBackgroundTint="@color/light_gray" />
 
                 </LinearLayout>
 
-                <ProgressBar
-                    android:id="@+id/progressWater"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:layout_marginTop="8dp"
-                    android:progress="0"
-                    android:progressTint="@color/hydration_progress" />
-
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <!-- Mood Goal -->
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginBottom="16dp"
-                android:padding="16dp"
-                android:background="@drawable/goal_background">
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                    <TextView
-                        android:id="@+id/tvMoodLabel"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="😊 Mood (0/0 positive)"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/tvMoodPercent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0%"
-                        android:textColor="@color/primary_color"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tvMoodLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="😊 Mood (0/0 positive)"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tvMoodPercent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0%"
+                            android:textColor="@color/accent_blue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progressMood"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:layout_marginTop="8dp"
+                        android:progress="0"
+                        android:progressTint="@color/accent_blue"
+                        android:progressBackgroundTint="@color/light_gray" />
 
                 </LinearLayout>
 
-                <ProgressBar
-                    android:id="@+id/progressMood"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:layout_marginTop="8dp"
-                    android:progress="0"
-                    android:progressTint="@color/mood_progress" />
-
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <!-- Cycling Goal -->
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginBottom="32dp"
-                android:padding="16dp"
-                android:background="@drawable/goal_background">
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                    <TextView
-                        android:id="@+id/tvCyclingLabel"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="🚴 Cycling (0.0/5 km)"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/tvCyclingPercent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0%"
-                        android:textColor="@color/primary_color"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tvCyclingLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="🚴 Cycling (0.0/5 km)"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tvCyclingPercent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0%"
+                            android:textColor="@color/accent_blue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progressCycling"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:layout_marginTop="8dp"
+                        android:progress="0"
+                        android:progressTint="@color/accent_blue"
+                        android:progressBackgroundTint="@color/light_gray" />
 
                 </LinearLayout>
 
-                <ProgressBar
-                    android:id="@+id/progressCycling"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:layout_marginTop="8dp"
-                    android:progress="0"
-                    android:progressTint="@color/cycling_primary" />
-
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <!-- Quick Actions Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Quick Actions"
-                android:textColor="@color/black"
+                android:textColor="@color/primary_blue"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="16dp" />
@@ -258,7 +326,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="2"
-                android:rowCount="2"
+                android:rowCount="3"
                 android:alignmentMode="alignMargins"
                 android:columnOrderPreserved="false"
                 android:padding="8dp">
@@ -272,27 +340,29 @@
                     android:layout_margin="8dp"
                     android:clickable="true"
                     android:focusable="true"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="6dp"
+                    app:cardBackgroundColor="@color/white">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:background="@color/primary_light">
+                        android:background="@drawable/card_gradient_primary">
 
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_habits"
-                            android:contentDescription="Habits" />
+                            android:contentDescription="Habits"
+                            android:tint="@color/white" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Habits"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             android:layout_marginTop="8dp" />
@@ -310,27 +380,29 @@
                     android:layout_margin="8dp"
                     android:clickable="true"
                     android:focusable="true"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="6dp"
+                    app:cardBackgroundColor="@color/white">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:background="@color/secondary_light">
+                        android:background="@drawable/card_gradient_secondary">
 
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_mood"
-                            android:contentDescription="Mood" />
+                            android:contentDescription="Mood"
+                            android:tint="@color/white" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Mood"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             android:layout_marginTop="8dp" />
@@ -348,27 +420,29 @@
                     android:layout_margin="8dp"
                     android:clickable="true"
                     android:focusable="true"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="6dp"
+                    app:cardBackgroundColor="@color/white">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:background="@color/accent_light">
+                        android:background="@drawable/card_gradient_accent">
 
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_goals"
-                            android:contentDescription="Stats" />
+                            android:contentDescription="Stats"
+                            android:tint="@color/white" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Stats"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             android:layout_marginTop="8dp" />
@@ -386,27 +460,29 @@
                     android:layout_margin="8dp"
                     android:clickable="true"
                     android:focusable="true"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="6dp"
+                    app:cardBackgroundColor="@color/white">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:background="@color/water_light">
+                        android:background="@drawable/card_gradient_primary">
 
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_water"
-                            android:contentDescription="Hydration" />
+                            android:contentDescription="Hydration"
+                            android:tint="@color/white" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Hydration"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             android:layout_marginTop="8dp" />
@@ -424,27 +500,29 @@
                     android:layout_margin="8dp"
                     android:clickable="true"
                     android:focusable="true"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="6dp"
+                    app:cardBackgroundColor="@color/white">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:background="@color/cycling_light">
+                        android:background="@drawable/card_gradient_secondary">
 
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_bike"
-                            android:contentDescription="Cycling" />
+                            android:contentDescription="Cycling"
+                            android:tint="@color/white" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Cycling"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             android:layout_marginTop="8dp" />
@@ -467,6 +545,8 @@
         app:menu="@menu/bottom_navigation_menu"
         app:labelVisibilityMode="labeled"
         app:itemIconTint="@color/bottom_nav_color"
-        app:itemTextColor="@color/bottom_nav_color" />
+        app:itemTextColor="@color/bottom_nav_color"
+        android:background="@color/white"
+        app:elevation="8dp" />
 
 </LinearLayout>

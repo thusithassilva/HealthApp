@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary_color">#2196F3</color>
-    <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="gray">#666666</color>
     <color name="gray_light">#CCCCCC</color>
@@ -10,10 +9,10 @@
     <color name="secondary_light">#F3E5F5</color>
     <color name="accent_light">#E8F5E8</color>
     <color name="water_light">#E0F7FA</color>
-    <color name="bottom_nav_color">#2196F3</color>
+
     <color name="secondary_color">#FF5722</color>
     <!-- Professional Color Scheme -->
-    <color name="light_background">#F8F9FA</color>
+
     <color name="dark_text">#2C3E50</color>
     <color name="divider_color">#ECF0F1</color>
     <color name="input_border">#BDC3C7</color>
@@ -34,7 +33,6 @@
     <color name="hydration_icon">#1ABC9C</color>
 
     <!-- Habit Colors -->
-    <color name="light_gray">#F0F0F0</color>
     <color name="success_green">#4CAF50</color>
 
     <!-- Hydration Colors -->
@@ -57,5 +55,33 @@
     <color name="distance_light">#E3F2FD</color>
     <color name="time_light">#FFF3E0</color>
     <color name="calorie_light">#FFEBEE</color>
+
+    <!-- 60% Primary Color (Dominant) -->
+    <color name="primary_blue">#1976D2</color>
+    <color name="light_background">#F5F9FF</color>
+
+    <!-- 30% Secondary Color -->
+    <color name="secondary_blue">#42A5F5</color>
+    <color name="light_blue">#E3F2FD</color>
+
+    <!-- 10% Accent Color -->
+    <color name="accent_blue">#1565C0</color>
+
+    <!-- Neutral Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="light_gray">#F5F5F5</color>
+    <color name="medium_gray">#9E9E9E</color>
+    <color name="dark_gray">#424242</color>
+
+    <!-- Bottom Navigation -->
+    <color name="bottom_nav_color">#1976D2</color>
+
+
+    <color name="status_bar_blue">#1976D2</color>
+    <color name="gradient_start">#1976D2</color>
+    <color name="gradient_end">#1976D2</color>
+    <color name="light_blue_white">#E3F2FD</color>
+    <color name="dark_shadow">#60000000</color>
+    <color name="profile_circle_dark">#1E88E5</color>
 
 </resources>

@@ -22,7 +22,6 @@ class ProfileActivity : AppCompatActivity() {
         setupToolbar()
         loadUserData()
         setupClickListeners()
-        setupActivityProgress()
     }
 
     private fun setupToolbar() {
@@ -47,21 +46,6 @@ class ProfileActivity : AppCompatActivity() {
 
         binding.tvUserName.text = userName
         binding.tvUserEmail.text = userEmail
-    }
-
-    private fun setupActivityProgress() {
-        // Mock activity progress data
-        binding.progressHabits.progress = 75
-        binding.progressMood.progress = 60
-        binding.progressHydration.progress = 85
-
-        binding.tvHabitsPercent.text = "75%"
-        binding.tvMoodPercent.text = "60%"
-        binding.tvHydrationPercent.text = "85%"
-
-        binding.tvHabitsDays.text = "21/30 days"
-        binding.tvMoodEntries.text = "18/30 entries"
-        binding.tvWaterGlasses.text = "42/50 glasses"
     }
 
     private fun setupClickListeners() {

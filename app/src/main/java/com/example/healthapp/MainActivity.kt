@@ -210,7 +210,7 @@ class MainActivity : AppCompatActivity() {
 
         // Profile icon click
         binding.ivProfile.setOnClickListener {
-            showProfileMenu()
+            startActivity(Intent(this, ViewProfileActivity::class.java))
         }
     }
 

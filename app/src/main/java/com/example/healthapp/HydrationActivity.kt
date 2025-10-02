@@ -261,6 +261,8 @@ class HydrationActivity : AppCompatActivity() {
     }
 
     private fun startWaterReminder() {
+        cancelWaterReminder() // Cancel any existing reminders first
+
         val intent = Intent(this, WaterReminderReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             this,
@@ -271,12 +273,43 @@ class HydrationActivity : AppCompatActivity() {
 
         val intervalMillis = reminderInterval * 1000L // Convert seconds to milliseconds
 
-        alarmManager.setRepeating(
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            SystemClock.elapsedRealtime() + intervalMillis,
-            intervalMillis,
-            pendingIntent
-        )
+        // Use setExactAndAllowWhileIdle for precise timing on newer Android versions
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + intervalMillis,
+                pendingIntent
+            )
+        } else {
+            alarmManager.setExact(
+                AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + intervalMillis,
+                pendingIntent
+            )
+        }
+
+        // Schedule the next reminder recursively
+        scheduleNextReminder(pendingIntent, intervalMillis)
+    }
+
+    private fun scheduleNextReminder(pendingIntent: PendingIntent, intervalMillis: Long) {
+        if (!reminderEnabled) return
+
+        val nextTriggerTime = SystemClock.elapsedRealtime() + intervalMillis
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                nextTriggerTime,
+                pendingIntent
+            )
+        } else {
+            alarmManager.setExact(
+                AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                nextTriggerTime,
+                pendingIntent
+            )
+        }
     }
 
     private fun cancelWaterReminder() {
@@ -289,7 +322,6 @@ class HydrationActivity : AppCompatActivity() {
         )
 
         alarmManager.cancel(pendingIntent)
-        pendingIntent.cancel()
     }
 
     private fun saveHydrationData() {
@@ -308,12 +340,23 @@ class HydrationActivity : AppCompatActivity() {
         updateReminderUI()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Restart reminders if they were enabled
+        if (reminderEnabled) {
+            startWaterReminder()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // We don't cancel reminders on pause to keep them running in background
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        // Clean up reminders when activity is destroyed
-        if (!reminderEnabled) {
-            cancelWaterReminder()
-        }
+        // We don't cancel reminders on destroy to keep them running
+        // They will be managed by the system
     }
 
     override fun onBackPressed() {

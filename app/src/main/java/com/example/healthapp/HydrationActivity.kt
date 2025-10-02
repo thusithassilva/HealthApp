@@ -1,8 +1,13 @@
 package com.example.healthapp
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
 import android.widget.Toast
 import com.example.healthapp.databinding.ActivityHydrationBinding
 import java.text.SimpleDateFormat
@@ -12,11 +17,12 @@ class HydrationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHydrationBinding
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var alarmManager: AlarmManager
 
-    private var currentWaterIntake = 0.0
+    private var currentWaterIntake = 0.0f
     private val dailyWaterGoal = 8 // 8 glasses per day
     private var reminderEnabled = false
-    private var reminderInterval = 60 // minutes
+    private var reminderInterval = 5 // seconds for testing
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +30,7 @@ class HydrationActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         setupToolbar()
         loadHydrationData()
@@ -46,25 +53,25 @@ class HydrationActivity : AppCompatActivity() {
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
         // Load today's water intake
-        currentWaterIntake = sharedPreferences.getFloat("water_intake_$today", 0f).toDouble()
+        currentWaterIntake = sharedPreferences.getFloat("water_intake_$today", 0f)
 
         // Load reminder settings
         reminderEnabled = sharedPreferences.getBoolean("water_reminder_enabled", false)
-        reminderInterval = sharedPreferences.getInt("water_reminder_interval", 60)
+        reminderInterval = sharedPreferences.getInt("water_reminder_interval", 5)
     }
 
     private fun setupClickListeners() {
         // Add water buttons
         binding.btnAddGlass.setOnClickListener {
-            addWater(1.0)
+            addWater(1.0f)
         }
 
         binding.btnAddHalfGlass.setOnClickListener {
-            addWater(0.5)
+            addWater(0.5f)
         }
 
         binding.btnRemoveGlass.setOnClickListener {
-            removeWater(1.0)
+            removeWater(1.0f)
         }
 
         // Reminder toggle
@@ -72,27 +79,25 @@ class HydrationActivity : AppCompatActivity() {
             reminderEnabled = isChecked
             saveReminderSettings()
             if (isChecked) {
-                Toast.makeText(this, "Water reminders enabled", Toast.LENGTH_SHORT).show()
+                startWaterReminder()
+                Toast.makeText(this, "Water reminders enabled every $reminderInterval seconds", Toast.LENGTH_SHORT).show()
             } else {
+                cancelWaterReminder()
                 Toast.makeText(this, "Water reminders disabled", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // Reminder interval buttons
+        // Reminder interval buttons - Updated to seconds
         binding.btn30min.setOnClickListener {
-            setReminderInterval(30)
+            setReminderInterval(5) // 5 seconds for testing
         }
 
         binding.btn60min.setOnClickListener {
-            setReminderInterval(60)
+            setReminderInterval(10) // 10 seconds for testing
         }
 
         binding.btn90min.setOnClickListener {
-            setReminderInterval(90)
-        }
-
-        binding.btn120min.setOnClickListener {
-            setReminderInterval(120)
+            setReminderInterval(15) // 15 seconds for testing
         }
 
         // Reset daily intake
@@ -105,17 +110,17 @@ class HydrationActivity : AppCompatActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_habits -> {
-                    startActivity(android.content.Intent(this, HabitsActivity::class.java))
+                    startActivity(Intent(this, HabitsActivity::class.java))
                     finish()
                     true
                 }
                 R.id.nav_mood -> {
-                    startActivity(android.content.Intent(this, MoodActivity::class.java))
+                    startActivity(Intent(this, MoodActivity::class.java))
                     finish()
                     true
                 }
                 R.id.nav_stats -> {
-                    startActivity(android.content.Intent(this, StatsActivity::class.java))
+                    startActivity(Intent(this, StatsActivity::class.java))
                     finish()
                     true
                 }
@@ -131,57 +136,76 @@ class HydrationActivity : AppCompatActivity() {
         binding.bottomNavigationView.selectedItemId = R.id.nav_hydration
     }
 
-    private fun addWater(amount: Double) {
-        currentWaterIntake += amount
+    private fun addWater(amount: Float) {
+        // Check if adding water would exceed the daily goal
+        if (currentWaterIntake + amount > dailyWaterGoal) {
+            Toast.makeText(this, "Cannot exceed daily goal of $dailyWaterGoal glasses!", Toast.LENGTH_SHORT).show()
+            return
+        }
 
+        currentWaterIntake += amount
         saveHydrationData()
         updateUI()
 
-        val message = if (amount == 0.5) "Half glass added!" else "Glass of water added!"
+        val message = if (amount == 0.5f) "Half glass added!" else "Glass of water added!"
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
         // Check if goal is reached
         if (currentWaterIntake >= dailyWaterGoal) {
             binding.tvCongratulations.visibility = android.view.View.VISIBLE
+            Toast.makeText(this, "🎉 Congratulations! You reached your daily water goal!", Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun removeWater(amount: Double) {
+    private fun removeWater(amount: Float) {
         if (currentWaterIntake > 0) {
-            currentWaterIntake = maxOf(0.0, currentWaterIntake - amount)
+            currentWaterIntake = maxOf(0.0f, currentWaterIntake - amount)
             saveHydrationData()
             updateUI()
+            binding.tvCongratulations.visibility = android.view.View.GONE
             Toast.makeText(this, "Water removed", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "No water to remove!", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun setReminderInterval(minutes: Int) {
-        reminderInterval = minutes
+    private fun setReminderInterval(seconds: Int) {
+        val wasEnabled = reminderEnabled
+        if (wasEnabled) {
+            cancelWaterReminder()
+        }
+
+        reminderInterval = seconds
         saveReminderSettings()
         updateReminderUI()
-        Toast.makeText(this, "Reminder set to $minutes minutes", Toast.LENGTH_SHORT).show()
+
+        if (wasEnabled) {
+            startWaterReminder()
+        }
+
+        Toast.makeText(this, "Reminder set to $seconds seconds", Toast.LENGTH_SHORT).show()
     }
 
     private fun resetDailyIntake() {
-        currentWaterIntake = 0.0
+        currentWaterIntake = 0.0f
         saveHydrationData()
         updateUI()
+        binding.tvCongratulations.visibility = android.view.View.GONE
         Toast.makeText(this, "Daily intake reset", Toast.LENGTH_SHORT).show()
     }
 
     private fun updateUI() {
-        // Update water intake display - format to show .5 for half glasses
-        val displayIntake = if (currentWaterIntake % 1 == 0.0) {
+        // Update water label
+        val displayIntake = if (currentWaterIntake % 1 == 0.0f) {
             currentWaterIntake.toInt().toString()
         } else {
             String.format("%.1f", currentWaterIntake)
         }
-        //binding.tvWaterIntake.text = displayIntake
-        //binding.tvWaterGoal.text = "/ $dailyWaterGoal glasses"
+        binding.tvWaterLabel.text = "💧 Today's Intake ($displayIntake/$dailyWaterGoal glasses)"
 
         // Update progress
         val progress = ((currentWaterIntake * 100) / dailyWaterGoal).toInt()
-        binding.progressWater.progress = progress
+        binding.progressWater.progress = minOf(progress, 100)
         binding.tvProgressPercent.text = "$progress%"
 
         // Update water level visualization
@@ -193,21 +217,12 @@ class HydrationActivity : AppCompatActivity() {
             else android.view.View.GONE
 
         // Update today's date
-        val today = SimpleDateFormat("EEEE, MMMM d", Locale.getDefault()).format(Date())
+        val today = SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault()).format(Date())
         binding.tvTodayDate.text = today
     }
 
     private fun updateWaterLevelVisualization() {
         val waterLevel = ((currentWaterIntake * 100) / dailyWaterGoal).toInt()
-
-        // Update water level in the glass (visual representation)
-        when {
-            //waterLevel >= 100 -> binding.ivWaterLevel.setImageResource(R.drawable.water_level_100)
-            //waterLevel >= 75 -> binding.ivWaterLevel.setImageResource(R.drawable.water_level_75)
-            //waterLevel >= 50 -> binding.ivWaterLevel.setImageResource(R.drawable.water_level_50)
-            //waterLevel >= 25 -> binding.ivWaterLevel.setImageResource(R.drawable.water_level_25)
-            //else -> binding.ivWaterLevel.setImageResource(R.drawable.water_level_0)
-        }
 
         // Update hydration status message
         val statusMessage = when {
@@ -224,13 +239,12 @@ class HydrationActivity : AppCompatActivity() {
         binding.switchReminder.isChecked = reminderEnabled
 
         // Update interval button states
-        updateButtonBackground(binding.btn30min, reminderInterval == 30)
-        updateButtonBackground(binding.btn60min, reminderInterval == 60)
-        updateButtonBackground(binding.btn90min, reminderInterval == 90)
-        updateButtonBackground(binding.btn120min, reminderInterval == 120)
+        updateButtonBackground(binding.btn30min, reminderInterval == 5)
+        updateButtonBackground(binding.btn60min, reminderInterval == 10)
+        updateButtonBackground(binding.btn90min, reminderInterval == 15)
 
         binding.tvReminderStatus.text =
-            if (reminderEnabled) "Reminders every $reminderInterval minutes"
+            if (reminderEnabled) "Reminders every $reminderInterval seconds"
             else "Reminders disabled"
     }
 
@@ -238,6 +252,7 @@ class HydrationActivity : AppCompatActivity() {
         if (isSelected) {
             button.setBackgroundColor(getColor(R.color.hydration_progress))
             button.setTextColor(getColor(R.color.white))
+            button.strokeColor = getColorStateList(R.color.hydration_progress)
         } else {
             button.setBackgroundColor(getColor(R.color.white))
             button.setTextColor(getColor(R.color.dark_text))
@@ -245,10 +260,42 @@ class HydrationActivity : AppCompatActivity() {
         }
     }
 
+    private fun startWaterReminder() {
+        val intent = Intent(this, WaterReminderReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val intervalMillis = reminderInterval * 1000L // Convert seconds to milliseconds
+
+        alarmManager.setRepeating(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            SystemClock.elapsedRealtime() + intervalMillis,
+            intervalMillis,
+            pendingIntent
+        )
+    }
+
+    private fun cancelWaterReminder() {
+        val intent = Intent(this, WaterReminderReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        alarmManager.cancel(pendingIntent)
+        pendingIntent.cancel()
+    }
+
     private fun saveHydrationData() {
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val editor = sharedPreferences.edit()
-        editor.putFloat("water_intake_$today", currentWaterIntake.toFloat())
+        editor.putFloat("water_intake_$today", currentWaterIntake)
         editor.apply()
     }
 
@@ -259,6 +306,14 @@ class HydrationActivity : AppCompatActivity() {
         editor.apply()
 
         updateReminderUI()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Clean up reminders when activity is destroyed
+        if (!reminderEnabled) {
+            cancelWaterReminder()
+        }
     }
 
     override fun onBackPressed() {

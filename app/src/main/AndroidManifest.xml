@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -26,7 +28,8 @@
             android:exported="false" />
         <activity
             android:name=".WaterReminderReceiver"
-            android:exported="false" /> <!-- Activities -->
+            android:exported="false" />
+        <!-- Activities -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">

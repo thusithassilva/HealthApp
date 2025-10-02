@@ -176,8 +176,8 @@ class HydrationActivity : AppCompatActivity() {
         } else {
             String.format("%.1f", currentWaterIntake)
         }
-        binding.tvWaterIntake.text = displayIntake
-        binding.tvWaterGoal.text = "/ $dailyWaterGoal glasses"
+        //binding.tvWaterIntake.text = displayIntake
+        //binding.tvWaterGoal.text = "/ $dailyWaterGoal glasses"
 
         // Update progress
         val progress = ((currentWaterIntake * 100) / dailyWaterGoal).toInt()
@@ -202,11 +202,11 @@ class HydrationActivity : AppCompatActivity() {
 
         // Update water level in the glass (visual representation)
         when {
-            waterLevel >= 100 -> binding.ivWaterLevel.setImageResource(R.drawable.water_level_100)
-            waterLevel >= 75 -> binding.ivWaterLevel.setImageResource(R.drawable.water_level_75)
-            waterLevel >= 50 -> binding.ivWaterLevel.setImageResource(R.drawable.water_level_50)
-            waterLevel >= 25 -> binding.ivWaterLevel.setImageResource(R.drawable.water_level_25)
-            else -> binding.ivWaterLevel.setImageResource(R.drawable.water_level_0)
+            //waterLevel >= 100 -> binding.ivWaterLevel.setImageResource(R.drawable.water_level_100)
+            //waterLevel >= 75 -> binding.ivWaterLevel.setImageResource(R.drawable.water_level_75)
+            //waterLevel >= 50 -> binding.ivWaterLevel.setImageResource(R.drawable.water_level_50)
+            //waterLevel >= 25 -> binding.ivWaterLevel.setImageResource(R.drawable.water_level_25)
+            //else -> binding.ivWaterLevel.setImageResource(R.drawable.water_level_0)
         }
 
         // Update hydration status message

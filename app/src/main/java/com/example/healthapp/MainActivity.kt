@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
         binding.tvWaterPercent.text = "$hydrationProgress%"
 
         // Update label to show actual intake
-        binding.tvWaterLabel.text = "💧 Hydration (${waterIntake.toInt()}/$hydrationGoal glasses)"
+        binding.tvWaterLabel.text = "🔵 Hydration (${waterIntake.toInt()}/$hydrationGoal glasses)"
     }
 
     private fun updateHabitsProgress() {
@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.progressMood.progress = minOf(moodProgress, 100)
         binding.tvMoodPercent.text = "$moodProgress%"
-        binding.tvMoodLabel.text = "😊 Mood ($moodEntriesToday/$moodGoal entries)"
+        binding.tvMoodLabel.text = "🔵 Mood ($moodEntriesToday/$moodGoal entries)"
     }
 
     private fun updateCyclingProgress() {
@@ -186,7 +186,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.progressCycling.progress = minOf(cyclingProgress, 100)
         binding.tvCyclingPercent.text = "$cyclingProgress%"
-        binding.tvCyclingLabel.text = "🚴 Cycling (${"%.1f".format(totalDistance)}/$cyclingGoal km)"
+        binding.tvCyclingLabel.text = "🔵 Cycling (${"%.1f".format(totalDistance)}/$cyclingGoal km)"
     }
 
     private fun setupClickListeners() {
